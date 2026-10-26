@@ -53,14 +53,14 @@ const items: NavItem[] = [
     { label: 'DS Nhà Máy', href: '/nha-may', icon: MdFactory },
     { label: 'DS Line', href: '#', icon: FaUsersBetweenLines },
     { label: 'DS Tổ', href: '#', icon: TiGroup },
-    { label: 'Tạo Sơ Đồ', href: '#', icon: PiNetworkFill },
-    { label: 'Tạo Sản Lượng', href: '#', icon: LuFilePlus },
-    { label: 'Thiết Lập Tăng Ca', href: '#', icon: LuHistory },
-    { label: 'Báo Cáo SL', href: '#', icon: LuTable },
-    { label: 'Xem Sản Lượng', href: '#', icon: LuEye },
-    { label: 'Trạm Bấm Di Động', href: '#', icon: LuSmartphone },
-    { label: 'Màn Hình CĐ', href: '#', icon: LuMonitor },
-    { label: 'Hệ Thống', href: '#', icon: LuSettings },
+    // { label: 'Tạo Sơ Đồ', href: '#', icon: PiNetworkFill },
+    // { label: 'Tạo Sản Lượng', href: '#', icon: LuFilePlus },
+    // { label: 'Thiết Lập Tăng Ca', href: '#', icon: LuHistory },
+    // { label: 'Báo Cáo SL', href: '#', icon: LuTable },
+    // { label: 'Xem Sản Lượng', href: '#', icon: LuEye },
+    // { label: 'Trạm Bấm Di Động', href: '#', icon: LuSmartphone },
+    // { label: 'Màn Hình CĐ', href: '#', icon: LuMonitor },
+    // { label: 'Hệ Thống', href: '#', icon: LuSettings },
 ];
 
 export function Sidebar() {
@@ -74,7 +74,7 @@ export function Sidebar() {
             <MobileTopBar activeIndex={activeIndex} />
             <aside
                 data-collapsed={collapsed}
-                className={`sidebar-root sticky top-0 z-10 hidden md:flex h-dvh shrink-0 flex-col self-start bg-main transition-[width] duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] ${
+                className={`sidebar-root sticky top-0 z-10 hidden md:flex h-dvh shrink-0 flex-col self-start bg-main ${
                     collapsed ? 'w-20' : 'w-64'
                 }`}
             >
@@ -97,7 +97,7 @@ export function Sidebar() {
       `}</style>
 
                 {/* Header: nút thu gọn (thay chỗ logo bên Toeco), canh theo cột icon của các mục */}
-                <div className="flex items-center pt-4 pl-4 h-20" style={{ animation: 'sidebar-in 500ms ease-out both' }}>
+                <div className="flex items-center my-4 pl-6" style={{ animation: 'sidebar-in 500ms ease-out both' }}>
                     <button
                         type="button"
                         onClick={() => setCollapsed((v) => !v)}
@@ -136,12 +136,12 @@ function SidebarNav({ activeIndex, collapsed, onNavigate }: SidebarNavProps) {
     return (
         // ERP nhiều mục hơn Toeco nên cho cuộn; margin dọc chừa chỗ cho 2 góc bo ngược của thanh trượt,
         // -mr-px để pill lấn 1px sang nội dung (thay -right-px của Toeco, vì vùng cuộn cắt mất phần tràn)
-        <div className="flex-1 -mr-px min-h-0 overflow-x-hidden overflow-y-auto [scrollbar-width:none]">
-            <nav className="relative my-8">
+        <div className="flex-1 -mr-px min-h-0 overflow-x-hidden overflow-y-auto scrollbar-none">
+            <nav className="relative">
                 {/* Thanh trượt: pill sáng + 2 góc bo ngược (trên & dưới) nối liền với nội dung */}
                 <div
                     aria-hidden
-                    className={`pointer-events-none absolute right-0 left-2 top-0 h-16 rounded-l-full bg-canvas transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.34,1.4,0.64,1)] before:absolute before:-top-8 before:right-0 before:h-8 before:w-8 before:bg-[radial-gradient(circle_at_0_0,transparent_31.5px,var(--color-canvas)_32px)] before:content-[''] after:absolute after:-bottom-8 after:right-0 after:h-8 after:w-8 after:bg-[radial-gradient(circle_at_0_100%,transparent_31.5px,var(--color-canvas)_32px)] after:content-[''] ${
+                    className={`pointer-events-none absolute right-0 left-2 top-0 h-16 rounded-l-full bg-canvas transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.34,1.4,0.64,1)] before:absolute before:-top-8 before:right-0 before:size-8 before:bg-[radial-gradient(circle_at_0_0,transparent_31.5px,var(--color-canvas)_32px)] before:content-[''] after:absolute after:-bottom-8 after:right-0 after:size-8 after:bg-[radial-gradient(circle_at_0_100%,transparent_31.5px,var(--color-canvas)_32px)] after:content-[''] ${
                         activeIndex < 0 ? 'opacity-0' : 'opacity-100'
                     }`}
                     style={{ transform: `translateY(${Math.max(activeIndex, 0) * ITEM_H}px)` }}
@@ -163,22 +163,20 @@ function SidebarNav({ activeIndex, collapsed, onNavigate }: SidebarNavProps) {
                                     href={item.href}
                                     onClick={onNavigate}
                                     aria-current={active ? 'page' : undefined}
-                                    className={`group relative z-10 flex h-16 items-center gap-4 transition-[padding] duration-500 ${!active ? 'hover:bg-white/10' : ''} ${
+                                    className={`relative z-10 flex h-16 items-center gap-4 ${!active ? 'hover:bg-white/10' : ''} ${
                                         collapsed ? 'pl-7' : 'pl-9'
                                     }`}
                                 >
                                     <Icon
                                         // key đổi theo active để chạy lại animation "pop" mỗi lần được chọn
                                         key={active ? 'on' : 'off'}
-                                        className={`h-6 w-6 shrink-0 transition-all duration-300 group-hover:-rotate-12 group-hover:scale-110 ${
-                                            active ? 'text-black' : 'text-white'
-                                        }`}
+                                        className={`size-6 shrink-0 ${active ? 'text-black' : 'text-white'}`}
                                         style={active ? { animation: 'sidebar-pop 500ms ease-out both' } : undefined}
                                     />
                                     <span
-                                        className={`whitespace-nowrap text-base font-medium transition-all duration-300 group-hover:translate-x-1 ${
+                                        className={`whitespace-nowrap text-base font-medium ${
                                             active ? 'text-black' : 'text-white'
-                                        } ${collapsed ? 'pointer-events-none -translate-x-3 opacity-0' : 'opacity-100'}`}
+                                        } ${collapsed ? 'sr-only' : ''}`}
                                     >
                                         {item.label}
                                     </span>
@@ -198,13 +196,13 @@ function UserMenu({ collapsed }: { collapsed: boolean }) {
 
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger className="flex items-center gap-3 data-popup-open:bg-white/10 hover:bg-white/10 p-2 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sub3 w-full overflow-hidden text-left transition-colors cursor-pointer">
+            <DropdownMenuTrigger className="flex items-center gap-3 data-popup-open:bg-white/10 hover:bg-white/10 p-2 rounded-lg focus-visible:outline-2 focus-visible:outline-sub3 focus-visible:outline-offset-2 w-full overflow-hidden text-left transition-colors cursor-pointer">
                 <Avatar size="lg" className="after:border-0">
                     <AvatarFallback className="bg-sub3 font-semibold text-on-sub3">{user.initials}</AvatarFallback>
                 </Avatar>
                 <span
-                    className={`flex-1 grid min-w-0 leading-tight transition-all duration-300 ${
-                        collapsed ? '-translate-x-3 opacity-0' : ''
+                    className={`flex-1 grid min-w-0 leading-tight ${
+                        collapsed ? 'sr-only' : ''
                     }`}
                 >
                     <span className="font-semibold text-white text-sm truncate">{user.name}</span>
@@ -212,7 +210,7 @@ function UserMenu({ collapsed }: { collapsed: boolean }) {
                 </span>
                 <LuChevronsUpDown
                     aria-hidden="true"
-                    className={`size-4 text-sub1/70 transition-opacity duration-300 shrink-0 ${collapsed ? 'opacity-0' : ''}`}
+                    className={`size-4 text-sub1/70 shrink-0 ${collapsed ? 'hidden' : ''}`}
                 />
             </DropdownMenuTrigger>
 
