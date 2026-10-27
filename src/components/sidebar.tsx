@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import type { IconType } from 'react-icons';
@@ -74,7 +75,7 @@ export function Sidebar() {
             <MobileTopBar activeIndex={activeIndex} />
             <aside
                 data-collapsed={collapsed}
-                className={`sidebar-root sticky top-0 z-10 hidden md:flex h-dvh shrink-0 flex-col self-start bg-main ${
+                className={`sidebar-root  sticky top-0 z-10 hidden md:flex h-dvh shrink-0 flex-col self-start bg-main ${
                     collapsed ? 'w-20' : 'w-64'
                 }`}
             >
@@ -96,16 +97,28 @@ export function Sidebar() {
         }
       `}</style>
 
-                {/* Header: nút thu gọn (thay chỗ logo bên Toeco), canh theo cột icon của các mục */}
-                <div className="flex items-center my-4 pl-6" style={{ animation: 'sidebar-in 500ms ease-out both' }}>
+                {/* Header: logo kiêm nút thu gọn */}
+                <div
+                    className="z-20 relative flex justify-center items-center my-4"
+                    style={{ animation: 'sidebar-in 500ms ease-out both' }}
+                >
                     <button
                         type="button"
                         onClick={() => setCollapsed((v) => !v)}
                         aria-label={collapsed ? 'Mở rộng thanh bên' : 'Thu gọn thanh bên'}
                         aria-expanded={!collapsed}
-                        className="flex justify-center items-center hover:bg-white/10 rounded-lg focus-visible:outline-2 focus-visible:outline-sub3 size-12 text-white cursor-pointer"
+                        className="flex justify-center items-center hover:bg-white/10 px-2 rounded-lg focus-visible:outline-2 focus-visible:outline-sub3 h-16 cursor-pointer"
                     >
-                        <LuMenu aria-hidden="true" className="size-6" />
+                        <Image
+                            src="/img/logo-white.webp"
+                            alt=""
+                            width={191}
+                            height={95}
+                            preload
+                            // ảnh gốc đã nhỏ + lossless, để Next nén lại chỉ làm mờ cạnh chữ
+                            unoptimized
+                            className={`w-auto transition-[height] ${collapsed ? 'h-6' : 'h-16'}`}
+                        />
                     </button>
                 </div>
 
@@ -134,9 +147,10 @@ interface SidebarNavProps {
 
 function SidebarNav({ activeIndex, collapsed, onNavigate }: SidebarNavProps) {
     return (
-        // ERP nhiều mục hơn Toeco nên cho cuộn; margin dọc chừa chỗ cho 2 góc bo ngược của thanh trượt,
+        // ERP nhiều mục hơn Toeco nên cho cuộn; -mt-8 pt-8 / pb-8 chừa chỗ cho 2 góc bo ngược của thanh trượt (không thì vùng cuộn cắt mất),
+        // header phía trên đặt z-20 để vùng cuộn lấn lên không che nút,
         // -mr-px để pill lấn 1px sang nội dung (thay -right-px của Toeco, vì vùng cuộn cắt mất phần tràn)
-        <div className="flex-1 -mr-px min-h-0 overflow-x-hidden overflow-y-auto scrollbar-none">
+        <div className="flex-1 -mt-8 -mr-px pt-8 pb-8 min-h-0 overflow-x-hidden overflow-y-auto scrollbar-none">
             <nav className="relative">
                 {/* Thanh trượt: pill sáng + 2 góc bo ngược (trên & dưới) nối liền với nội dung */}
                 <div
@@ -174,8 +188,8 @@ function SidebarNav({ activeIndex, collapsed, onNavigate }: SidebarNavProps) {
                                         style={active ? { animation: 'sidebar-pop 500ms ease-out both' } : undefined}
                                     />
                                     <span
-                                        className={`whitespace-nowrap text-base font-medium ${
-                                            active ? 'text-black' : 'text-white'
+                                        className={`whitespace-nowrap text-base  ${
+                                            active ? 'text-black font-bold' : 'text-white font-semibold'
                                         } ${collapsed ? 'sr-only' : ''}`}
                                     >
                                         {item.label}
@@ -200,11 +214,7 @@ function UserMenu({ collapsed }: { collapsed: boolean }) {
                 <Avatar size="lg" className="after:border-0">
                     <AvatarFallback className="bg-sub3 font-semibold text-on-sub3">{user.initials}</AvatarFallback>
                 </Avatar>
-                <span
-                    className={`flex-1 grid min-w-0 leading-tight ${
-                        collapsed ? 'sr-only' : ''
-                    }`}
-                >
+                <span className={`flex-1 grid min-w-0 leading-tight ${collapsed ? 'sr-only' : ''}`}>
                     <span className="font-semibold text-white text-sm truncate">{user.name}</span>
                     <span className="text-sub1/70 text-xs truncate">{user.role}</span>
                 </span>
@@ -269,7 +279,7 @@ function MobileTopBar({ activeIndex }: { activeIndex: number }) {
                     <LuMenu aria-hidden="true" className="size-6" />
                 </SheetTrigger>
                 <SheetContent side="left" showCloseButton={false} className="gap-0 bg-main border-none w-64">
-                    <div className="flex justify-end items-center pr-3 pl-4 h-20">
+                    <div className="z-20 relative flex justify-end items-center pr-3 pl-4 h-20">
                         <SheetTitle className="sr-only">Điều hướng</SheetTitle>
                         <SheetClose
                             aria-label="Đóng menu"
